@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 const DATA_PATH = path.join(__dirname, 'data', 'quotes.json');
 
