@@ -1,29 +1,11 @@
 {
-  "name": "app-quotes-api",
+  "name": "quotes-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "seed": "node scripts/seed.js"
+    "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shuanvita/app-quotes-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/shuanvita/app-quotes-api/issues"
-  },
-  "homepage": "https://github.com/shuanvita/app-quotes-api#readme",
   "dependencies": {
-    "@fastify/cors": "^11.2.0",
-    "better-sqlite3": "^12.6.2",
-    "dotenv": "^17.2.4",
-    "fastify": "^5.7.4"
+    "express": "^5.2.1"
   }
 }
