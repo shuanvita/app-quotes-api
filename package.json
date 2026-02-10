@@ -3,14 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node scripts/seed.js"
   },
   "repository": {
     "type": "git",
@@ -19,30 +15,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/shuanvita/app-quotes-api/issues"
   },
   "homepage": "https://github.com/shuanvita/app-quotes-api#readme",
   "dependencies": {
     "@fastify/cors": "^11.2.0",
-    "@fastify/rate-limit": "^10.3.0",
-    "@fastify/swagger": "^9.7.0",
-    "@fastify/swagger-ui": "^5.2.5",
+    "better-sqlite3": "^12.6.2",
     "dotenv": "^17.2.4",
-    "drizzle-orm": "^0.45.1",
-    "fastify": "^5.7.4",
-    "ioredis": "^5.9.2",
-    "postgres": "^3.4.8",
-    "redis": "^5.10.0",
-    "typesense": "^3.0.1",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "@types/node": "^25.2.3",
-    "@types/pg": "^8.16.0",
-    "drizzle-kit": "^0.31.9",
-    "nodemon": "^3.1.11",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "fastify": "^5.7.4"
   }
 }
