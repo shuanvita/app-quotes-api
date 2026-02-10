@@ -1,11 +1,21 @@
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync, mkdirSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const db = new Database(join(__dirname, '../data/quotes.db'));
+// В продакшене используем персистентный диск
+const dataDir = process.env.NODE_ENV === 'production'
+    ? join(__dirname, 'data')
+    : join(__dirname, '../data');
+
+if (!existsSync(dataDir)) {
+    mkdirSync(dataDir, { recursive: true });
+}
+
+const db = new Database(join(dataDir, 'quotes.db'));
 
 // Создаём таблицы
 db.exec(`

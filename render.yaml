@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: quotable-api
+    runtime: node
+    buildCommand: npm install && npm run seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    disk:
+      name: quotes-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
