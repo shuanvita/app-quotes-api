@@ -54,12 +54,72 @@ app.get('/quotes', async (req, res) => {
 });
 
 // СЛУЧАЙНЫЕ цитаты (limit по умолчанию = 1)
+// СЛУЧАЙНЫЕ цитаты с ПОЛНЫМИ фильтрами
 app.get('/quotes/random', async (req, res) => {
-    const limit = Math.min(parseInt(req.query.limit) || 1, 150);
-    const randomQuotes = Array.from({length: limit}, () =>
-        quotesCache[Math.floor(Math.random() * quotesCache.length)]
-    );
-    res.json(randomQuotes.length > 1 ? randomQuotes : randomQuotes[0]);
+    try {
+        const {
+            limit = 9,           // количество цитат
+            minLength = 0,       // мин. длина текста
+            maxLength = 150,     // макс. длина текста
+            tags,                // теги (через | : "love|friendship")
+            author,              // имя автора
+            authorId,            // ID автора
+        } = req.query;
+
+        let filtered = [...quotesCache];
+
+        // Фильтр по минимальной длине
+        const minLen = parseInt(minLength);
+        if (minLen > 0) {
+            filtered = filtered.filter(q => q.content.length >= minLen);
+        }
+
+        // Фильтр по максимальной длине
+        const maxLen = parseInt(maxLength);
+        if (maxLen < 10000) {
+            filtered = filtered.filter(q => q.content.length <= maxLen);
+        }
+
+        // Фильтр по тегам (OR логика)
+        if (tags) {
+            const tagArray = tags.split('|').map(t => t.toLowerCase());
+            filtered = filtered.filter(q =>
+                tagArray.some(tag => q.tags.some(t => t.toLowerCase() === tag))
+            );
+        }
+
+        // Фильтр по имени автора
+        if (author) {
+            filtered = filtered.filter(q =>
+                q.author.toLowerCase().includes(author.toLowerCase())
+            );
+        }
+
+        // Фильтр по ID автора
+        if (authorId) {
+            filtered = filtered.filter(q => q.authorSlug === authorId);
+        }
+
+        // Проверка на пустой результат
+        if (filtered.length === 0) {
+            return res.status(404).json({
+                error: 'Цитаты не найдены по заданным фильтрам'
+            });
+        }
+
+        // Генерация случайных цитат
+        const limitNum = Math.min(parseInt(limit), 150);
+        const randomQuotes = Array.from({ length: limitNum }, () =>
+            filtered[Math.floor(Math.random() * filtered.length)]
+        );
+
+        // Возврат одной цитаты (если limit=1) или массива
+        res.json(randomQuotes.length === 1 ? randomQuotes[0] : randomQuotes);
+
+    } catch (err) {
+        console.error('Ошибка /quotes/random:', err);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
 });
 
 // Цитата по ID
