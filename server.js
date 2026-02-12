@@ -26,7 +26,7 @@ async function loadQuotes() {
 
 // Все цитаты с пагинацией и фильтрами (limit=10 по умолчанию)
 app.get('/quotes', async (req, res) => {
-    const { tags, author, limit = 10, page = 0 } = req.query;
+    const { tags, author, limit = 15, page = 0 } = req.query;
     let filtered = [...quotesCache];
 
     // Фильтр по тегам (OR логика: love|friendship)
